@@ -1,13 +1,12 @@
 import axios from "axios";
 import { getListFronJson } from "./utils";
-const BASE_URL = "https://fc6eaabb-0798-4dd5-9a76-02daa25ed1d9.mock.pstmn.io";
-const ERROR_MSG = "Request failed with status code 404";
-// const ERROR_MESSAGE = "Cant find the list you asked for.";
+import ERROR_MESSAGE from "../constants/messages";
+import BASE_URL from "../constants/api";
 
 export const fetchList = async ({ listName }) => {
   try {
     const isOnline = window.navigator.onLine;
-    console.log(isOnline);
+
     if (isOnline) {
       const response = await axios.get(`${BASE_URL}/play-list/${listName}`);
       const data = await response.data;
@@ -19,9 +18,12 @@ export const fetchList = async ({ listName }) => {
       return playList;
     }
 
-    let error = { message: ERROR_MSG };
+    let error = { message: ERROR_MESSAGE };
     return { error };
   } catch (error) {
+    if (error.response.status === 404)
+      return { error: { message: ERROR_MESSAGE } };
+
     return { error };
   }
 };

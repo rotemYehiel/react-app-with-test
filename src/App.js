@@ -3,13 +3,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import FormSubmit from "./components/FormSubmit";
 import { idleState } from "./store/fsmStore";
-import { createFiniteStateMachine } from "./lib/rotem-fsm/fsmService";
+import { createFiniteStateMachine } from "./lib/fsm/fsmService";
 import STATES from "./constants/states";
 import EVENTS from "./constants/events";
+import List from "./components/List";
 
 function App() {
   const [fsm, setFSM] = useState(createFiniteStateMachine(idleState));
-
   const [list, setList] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -37,11 +37,6 @@ function App() {
     }
   }, [fsm, list, errorMsg, updateFSM]);
 
-  // const updateFSM = (event, payload) => {
-  //   fsm.transition(event, payload);
-  //   setFSM(createFiniteStateMachine(fsm.currentState));
-  // };
-
   return (
     <div>
       <FormSubmit
@@ -51,16 +46,9 @@ function App() {
         currentState={fsm?.currentState?.name}
       />
 
-      <p>Current State: {fsm.currentState.name}</p>
+      {list && list.songs.length && <List list={list} />}
 
-      {list && list.songs.length && (
-        <div>
-          <h2>{list.listName}</h2>
-          {list.songs.map((song, index) => {
-            return <div key={index}>{song.name}</div>;
-          })}
-        </div>
-      )}
+      <p>Current State: {fsm.currentState.name}</p>
 
       {errorMsg && errorMsg?.message && <div>{errorMsg.message}</div>}
     </div>

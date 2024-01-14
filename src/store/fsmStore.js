@@ -1,4 +1,4 @@
-import { createState } from "../lib/rotem-fsm/fsmService";
+import { createState } from "../lib/fsm/fsmService";
 import { fetchList } from "../service/apiService";
 import STATES from "../constants/states";
 import EVENTS from "../constants/events";
