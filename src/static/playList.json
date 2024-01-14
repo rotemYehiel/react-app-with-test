@@ -1,0 +1,53 @@
+[{
+        "listName": "rotem",
+        "songs": [{
+                "id": 1,
+                "name": "Human",
+                "artist": "Christina Perri"
+            },
+            {
+                "id": 2,
+                "name": "Payphone",
+                "artist": "Maroon 5"
+            },
+            {
+                "id": 3,
+                "name": "My heart will go on",
+                "artist": "Celine Dion"
+            },
+            {
+                "id": 4,
+                "name": "Mirrors",
+                "artist": "Justin Timberlake"
+            },
+            {
+                "id": 5,
+                "name": "Flowers",
+                "artist": "Miley Cyrus"
+            },
+            {
+                "id": 6,
+                "name": "Sweet Dreams",
+                "artist": "Beyonce'"
+            },
+            {
+                "id": 7,
+                "name": "Despacito",
+                "artist": "Luis Fonsi, Daddy Yankee"
+            },
+            {
+                "id": 8,
+                "name": "Human",
+                "artist": "Rag'nBone Man"
+            }
+        ]
+    },
+    {
+        "listName": "dima",
+        "songs": [{
+            "id": 11,
+            "name": "Don't stop me now",
+            "artist": "Queen"
+        }]
+    }
+]
