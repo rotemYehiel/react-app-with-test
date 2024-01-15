@@ -11,7 +11,7 @@ export const idleState = createState(
 
 export const loadingState = createState(
   STATES.LOADING,
-  async function (payload) {
+  async (payload) => {
     const { listName, setList, setErrorMsg } = payload;
     console.log("Entering Loading state");
     if (listName) {

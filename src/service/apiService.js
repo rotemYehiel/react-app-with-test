@@ -12,13 +12,13 @@ export const fetchList = async ({ listName }) => {
       const data = await response.data;
       return data;
     }
-    let playList = getListFronJson(listName);
+    const playList = getListFronJson(listName);
 
     if (playList?.listName) {
       return playList;
     }
 
-    let error = { message: ERROR_MESSAGE };
+    const error = { message: ERROR_MESSAGE };
     return { error };
   } catch (error) {
     if (error.response.status === 404)

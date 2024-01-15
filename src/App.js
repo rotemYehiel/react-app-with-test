@@ -8,7 +8,7 @@ import STATES from "./constants/states";
 import EVENTS from "./constants/events";
 import List from "./components/List";
 
-function App() {
+const App = () => {
   const [fsm, setFSM] = useState(createFiniteStateMachine(idleState));
   const [list, setList] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -46,13 +46,13 @@ function App() {
         currentState={fsm?.currentState?.name}
       />
 
-      {list && list.songs.length && <List list={list} />}
+      {list && list?.songs?.length && <List list={list} />}
 
       <p>Current State: {fsm.currentState.name}</p>
 
       {errorMsg && errorMsg?.message && <div>{errorMsg.message}</div>}
     </div>
   );
-}
+};
 
 export default App;

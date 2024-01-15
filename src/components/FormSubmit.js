@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import STATES from "../constants/states";
 import EVENTS from "../constants/events";
 
-function FormSubmit({ setList, updateFSM, setErrorMsg, currentState }) {
+const FormSubmit = ({ setList, updateFSM, setErrorMsg, currentState }) => {
   const [listName, setListName] = useState("");
 
   const handleSubmit = (ev) => {
@@ -34,6 +34,6 @@ function FormSubmit({ setList, updateFSM, setErrorMsg, currentState }) {
       </button>
     </form>
   );
-}
+};
 
 export default FormSubmit;
