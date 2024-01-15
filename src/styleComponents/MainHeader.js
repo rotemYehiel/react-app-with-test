@@ -41,8 +41,8 @@ export const ListImage = styled.div`
   height: 100%;
   overflow: hidden;
   border-radius: 50%;
-  background-image: ${({ listImage }) =>
-    listImage ? `url(${listImage})` : null};
+  background-image: ${({ $listImage }) =>
+    $listImage ? `url(${$listImage})` : "unset"};
   background-size: cover;
   background-position: center;
 `;

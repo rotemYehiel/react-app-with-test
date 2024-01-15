@@ -1,4 +1,11 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  errorMsgSelector,
+  fsmCurrentNameSelector,
+  listSelector,
+} from "../store/selectors";
+import { setErrorMsg, updateFSM } from "../store/actions";
 import FormSubmit from "./FormSubmit";
 import List from "./List";
 import { MainLayout } from "../styleComponents/Main";
@@ -8,47 +15,57 @@ import EVENTS from "../constants/events";
 import Loader from "./Loader";
 import ErrorDisplay from "./ErrorDisplay";
 
-const Main = ({
-  currentState,
-  setList,
-  updateFSM,
-  setErrorMsg,
-  list,
-  errorMsg,
-}) => {
-  const handleRetry = (ev) => {
-    ev.preventDefault();
-    if (currentState !== STATES.LOADING) {
-      updateFSM(EVENTS.RESET);
-      setList(null);
-      setErrorMsg(null);
-    }
-  };
+const Main = () => {
+  const dispatch = useDispatch();
+  const fsmCurrentName = useSelector(fsmCurrentNameSelector);
+  const list = useSelector(listSelector);
+  const errorMsg = useSelector(errorMsgSelector);
 
-  if (!currentState) return null;
+  const setList = useCallback(
+    (newList) => {
+      dispatch({ type: "UPDATE_LIST", payload: newList });
+    },
+    [dispatch]
+  );
+
+  const handleRetry = useCallback(
+    (ev) => {
+      ev.preventDefault();
+      if (fsmCurrentName !== STATES.LOADING) {
+        dispatch(updateFSM(EVENTS.RESET));
+        setList(null);
+        dispatch(setErrorMsg(null));
+      }
+    },
+    [fsmCurrentName, dispatch, setList]
+  );
+
+  useEffect(() => {
+    if (fsmCurrentName === STATES.LOADING && list !== null) {
+      dispatch(updateFSM(EVENTS.SONGS_RECEIVED));
+    }
+
+    if (fsmCurrentName === STATES.LOADING && !list && errorMsg) {
+      dispatch(updateFSM(EVENTS.ERROR_RECEIVED));
+    }
+  }, [fsmCurrentName, list, errorMsg, dispatch]);
+
+  if (!fsmCurrentName) return null;
   return (
     <MainLayout>
-      {currentState === STATES.IDLE && (
-        <FormSubmit
-          setList={setList}
-          updateFSM={updateFSM}
-          setErrorMsg={setErrorMsg}
-          currentState={currentState}
-        />
-      )}
+      {fsmCurrentName === STATES.IDLE && <FormSubmit setList={setList} />}
 
-      {currentState === STATES.FAIL && errorMsg && errorMsg?.message && (
+      {fsmCurrentName === STATES.FAIL && errorMsg && errorMsg?.message && (
         <ErrorDisplay errorMsg={errorMsg} />
       )}
 
-      {currentState === STATES.LOADING && <Loader />}
+      {fsmCurrentName === STATES.LOADING && <Loader />}
 
-      {currentState === STATES.SUCCESS && list && <List list={list} />}
-      {(currentState === STATES.SUCCESS || currentState === STATES.FAIL) && (
+      {fsmCurrentName === STATES.SUCCESS && list && <List list={list} />}
+      {(fsmCurrentName === STATES.SUCCESS ||
+        fsmCurrentName === STATES.FAIL) && (
         <Button onClick={handleRetry}>Retry</Button>
       )}
-
-      {currentState && <p>Current State: {currentState}</p>}
     </MainLayout>
   );
 };

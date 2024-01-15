@@ -1,4 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import {
+  fsmSelector,
+  listImageSelector,
+  listNameSelector,
+} from "../store/selectors";
 import {
   ListTitle,
   MainHeaderLayout,
@@ -7,15 +13,21 @@ import {
 } from "../styleComponents/MainHeader";
 import STATES from "../constants/states";
 
-const MainHeader = ({ listName, listImage, currentState }) => {
+const MainHeader = () => {
+  const fsm = useSelector(fsmSelector);
+  const listName = useSelector(listNameSelector);
+  const listImage = useSelector(listImageSelector);
+
   return (
     <MainHeaderLayout>
-      {currentState === STATES.SUCCESS && listName && (
+      {fsm?.currentState?.name === STATES.SUCCESS && listName && (
         <>
-          <ListTitle>{listName}</ListTitle>
-          <ListImageWrapper>
-            <ListImage listImage={listImage} />
-          </ListImageWrapper>
+          {listName && <ListTitle>{listName}</ListTitle>}
+          {listImage && (
+            <ListImageWrapper>
+              <ListImage $listImage={listImage} />
+            </ListImageWrapper>
+          )}
         </>
       )}
     </MainHeaderLayout>

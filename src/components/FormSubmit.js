@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setErrorMsg, updateFSM, updateList } from "../store/actions";
+import { fsmCurrentNameSelector } from "../store/selectors";
 import STATES from "../constants/states";
 import EVENTS from "../constants/events";
 import {
@@ -11,23 +14,48 @@ import {
   InputContainer,
 } from "../styleComponents/FormSubmit";
 
-const FormSubmit = ({ setList, updateFSM, setErrorMsg, currentState }) => {
+const FormSubmit = () => {
+  const dispatch = useDispatch();
+  const fsmCurrentStateName = useSelector(fsmCurrentNameSelector);
+
   const [listName, setListName] = useState("");
 
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-    updateFSM(EVENTS.SUBMIT, { listName, setList, setErrorMsg });
-  };
+  const setListFunc = useCallback(
+    (list) => dispatch(updateList(list)),
+    [dispatch]
+  );
 
-  const handleReset = (ev) => {
-    ev.preventDefault();
-    if (currentState !== STATES.LOADING) {
-      updateFSM(EVENTS.RESET);
-      setListName("");
-      setList(null);
-      setErrorMsg(null);
-    }
-  };
+  const setErrorMsgFunc = useCallback(
+    (errorMsg) => dispatch(setErrorMsg(errorMsg)),
+    [dispatch]
+  );
+
+  const handleSubmit = useCallback(
+    (ev) => {
+      ev.preventDefault();
+      dispatch(
+        updateFSM(EVENTS.SUBMIT, {
+          listName,
+          setListFunc,
+          setErrorMsgFunc,
+        })
+      );
+    },
+    [dispatch, listName, setErrorMsgFunc, setListFunc]
+  );
+
+  const handleReset = useCallback(
+    (ev) => {
+      ev.preventDefault();
+      if (fsmCurrentStateName !== STATES.LOADING) {
+        dispatch(updateFSM(EVENTS.RESET));
+        setListName("");
+        setListFunc(null);
+        setErrorMsgFunc(null);
+      }
+    },
+    [fsmCurrentStateName, dispatch, setErrorMsgFunc, setListFunc]
+  );
 
   return (
     <FormSubmitLayout onSubmit={handleSubmit}>
@@ -44,13 +72,13 @@ const FormSubmit = ({ setList, updateFSM, setErrorMsg, currentState }) => {
           {listName && (
             <ResetButton
               onClick={handleReset}
-              disabled={currentState?.name === STATES.LOADING}
+              disabled={fsmCurrentStateName === STATES.LOADING}
             >
               X
             </ResetButton>
           )}
         </InputContainer>
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton disabled={!listName.length}>Submit</SubmitButton>
       </InputsSection>
     </FormSubmitLayout>
   );
