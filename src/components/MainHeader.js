@@ -7,7 +7,7 @@ import {
 } from "../styleComponents/MainHeader";
 import STATES from "../constants/states";
 
-function MainHeader({ listName, listImage, currentState }) {
+const MainHeader = ({ listName, listImage, currentState }) => {
   return (
     <MainHeaderLayout>
       {currentState === STATES.SUCCESS && listName && (
@@ -20,6 +20,6 @@ function MainHeader({ listName, listImage, currentState }) {
       )}
     </MainHeaderLayout>
   );
-}
+};
 
 export default MainHeader;

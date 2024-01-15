@@ -8,14 +8,14 @@ import EVENTS from "../constants/events";
 import Loader from "./Loader";
 import ErrorDisplay from "./ErrorDisplay";
 
-function Main({
+const Main = ({
   currentState,
   setList,
   updateFSM,
   setErrorMsg,
   list,
   errorMsg,
-}) {
+}) => {
   const handleRetry = (ev) => {
     ev.preventDefault();
     if (currentState !== STATES.LOADING) {
@@ -51,6 +51,6 @@ function Main({
       {currentState && <p>Current State: {currentState}</p>}
     </MainLayout>
   );
-}
+};
 
 export default Main;
