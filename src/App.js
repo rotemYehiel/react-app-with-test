@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.css";
 import { idleState } from "./store/fsmStore";
 import { createFiniteStateMachine } from "./lib/fsm/fsmService";
 import STATES from "./constants/states";
