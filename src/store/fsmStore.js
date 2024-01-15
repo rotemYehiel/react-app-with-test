@@ -49,4 +49,3 @@ loadingState.addTransition(EVENTS.SONGS_RECIVED, successState);
 loadingState.addTransition(EVENTS.ERROR_RECIVED, failState);
 successState.addTransition(EVENTS.RESET, idleState);
 failState.addTransition(EVENTS.RESET, idleState);
-// idleState.addTransition(event, nextState);

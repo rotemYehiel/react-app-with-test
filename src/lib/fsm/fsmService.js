@@ -1,4 +1,3 @@
-// State representation
 const createState = (
   name,
   onEnter = () => {},
@@ -19,7 +18,6 @@ const createState = (
   };
 };
 
-// Finite State Machine
 const createFiniteStateMachine = (initialState) => {
   const fsm = {
     currentState: initialState,

@@ -1,17 +1,24 @@
 import React from "react";
+import { ListLayout, SongsList, Song } from "../styleComponents/List";
 
 const List = ({ list }) => {
   return (
-    <div className="list">
-      {/* {list && list.songs.length && ( */}
-      <div>
-        <h2>{list.listName}</h2>
-        {list.songs.map((song, index) => {
-          return <div key={index}>{song.name}</div>;
-        })}
-      </div>
-      {/* )} */}
-    </div>
+    <ListLayout>
+      {list?.songs?.length ? (
+        <SongsList>
+          {list.songs.map((song, index) => {
+            return (
+              <Song key={index}>
+                {song.name}
+                {song.artist && ` - ${song.artist}`}
+              </Song>
+            );
+          })}
+        </SongsList>
+      ) : (
+        <h2>There are no songs in this list</h2>
+      )}
+    </ListLayout>
   );
 };
 

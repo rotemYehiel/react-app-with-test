@@ -1,4 +1,4 @@
-const fsmService = require("./lib/fsm/fsmService.js"); // Replace with the correct file path
+const fsmService = require("./lib/fsm/fsmService.js");
 
 describe("createFiniteStateMachine", () => {
   const stateA = {

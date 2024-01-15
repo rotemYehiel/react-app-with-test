@@ -1,12 +1,12 @@
-import "./App.css";
 import React, { useCallback, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import FormSubmit from "./components/FormSubmit";
 import { idleState } from "./store/fsmStore";
 import { createFiniteStateMachine } from "./lib/fsm/fsmService";
 import STATES from "./constants/states";
 import EVENTS from "./constants/events";
-import List from "./components/List";
+import MainHeader from "./components/MainHeader";
+import Main from "./components/Main";
+import { AppLayout } from "./styleComponents/App";
 
 const App = () => {
   const [fsm, setFSM] = useState(createFiniteStateMachine(idleState));
@@ -22,12 +22,6 @@ const App = () => {
   );
 
   useEffect(() => {
-    console.log("@@@ APP effect:", {
-      fsm,
-      list,
-      errorMsg,
-    });
-
     if (fsm.currentState.name === STATES.LOADING && list !== null) {
       updateFSM(EVENTS.SONGS_RECIVED);
     }
@@ -38,20 +32,21 @@ const App = () => {
   }, [fsm, list, errorMsg, updateFSM]);
 
   return (
-    <div>
-      <FormSubmit
+    <AppLayout>
+      <MainHeader
+        listName={list?.listName}
+        listImage={list?.listImage}
+        currentState={fsm?.currentState?.name}
+      />
+      <Main
         setList={setList}
         updateFSM={updateFSM}
         setErrorMsg={setErrorMsg}
         currentState={fsm?.currentState?.name}
+        list={list}
+        errorMsg={errorMsg}
       />
-
-      {list && list?.songs?.length && <List list={list} />}
-
-      <p>Current State: {fsm.currentState.name}</p>
-
-      {errorMsg && errorMsg?.message && <div>{errorMsg.message}</div>}
-    </div>
+    </AppLayout>
   );
 };
 

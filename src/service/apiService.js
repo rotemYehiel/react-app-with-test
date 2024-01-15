@@ -21,7 +21,7 @@ export const fetchList = async ({ listName }) => {
     const error = { message: ERROR_MESSAGE };
     return { error };
   } catch (error) {
-    if (error.response.status === 404)
+    if (error?.response?.status === 404)
       return { error: { message: ERROR_MESSAGE } };
 
     return { error };
